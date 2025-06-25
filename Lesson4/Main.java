@@ -38,28 +38,73 @@
  */
 
 
+import Task1.Bowl;
 import Task1.Cat;
 import Task1.Dog;
 import Task2.Circle;
+import Task2.MyRectangle;
+import Task2.Triangle;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
+
         //Задание 1
-        int randomValue = new Random().nextInt(10);
+        System.out.println("Задание 1");
+        int randomValue = 3 + new Random().nextInt(7);
         for (int i = 0; i < randomValue; i++) {
-            var animal = (i%2 == 0)? new Dog("собакен_"+i): new Cat("котейка_"+i) ;
-            System.out.println(animal.getName() + " счетчик - " + animal.getCount());
+            var animal = (i % 2 == 0) ? new Dog("создан собакен_" + i) : new Cat("создан котейка_" + i);
+            System.out.println(animal.getName() + " теперь их - " + animal.getCount());
         }
 
-        //Задание 2+
+        //Задание 1 доп
+        System.out.println("Задание 1 доп");
+// Создаем миску с едой
+        Bowl foodBowl = new Bowl(10);
+
+        // Создаем массив котов
+        Cat[] cats = {
+                new Cat("Барсик"),
+                new Cat("Мурка"),
+                new Cat("Пушок")
+        };
+
+        System.out.println("--- Начальное состояние ---");
+        System.out.println("В миске: " + foodBowl.getFoodAmount() + " еды.");
+        System.out.println("Коты: " + Arrays.toString(cats));
+
+        System.out.println("\n--- Коты пытаются покушать ---");
+        // Просим всех котов покушать
+        // Барсик голоден, ему нужно 5 еды
+        cats[0].eat(foodBowl, 5);
+        // Мурка голодна, ей нужно 7 еды (в миске останется 5, ей не хватит)
+        cats[1].eat(foodBowl, 7);
+        // Пушок голоден, ему нужно 3 еды (в миске останется 5, ему хватит)
+        cats[2].eat(foodBowl, 3);
+
+        System.out.println("\n--- После попыток покушать ---");
+        System.out.println("В миске осталось: " + foodBowl.getFoodAmount() + " еды.");
+        System.out.println("Состояние котов:");
+        for (Cat cat : cats) {
+            System.out.println(cat);
+        }
+
+
+        //Задание 2
+        System.out.println("Задание 2");
         Color red = new Color(255, 0, 0);
         Color green = new Color(0, 255, 0);
         Color blue = new Color(0, 0, 255);
         Color black = new Color(0, 0, 0);
-        var circle = new Circle(5, red,black);
+
+        var circle = new Circle(5, red, black);
         circle.toPrint();
+        var rectangle = new MyRectangle(5, 6, black, green);
+        rectangle.toPrint();
+        var triangle = new Triangle(1, 3, 1, blue, red);
+        triangle.toPrint();
     }
 }

@@ -4,12 +4,12 @@ import java.awt.*;
 
 
 
-public class Rectangle extends Shape {
+public class MyRectangle extends Shape {
 
     private final double length;
     private final double width;
 
-    public Rectangle(double length,double width, Color fillColor, Color borderColor) {
+    public MyRectangle(double length, double width, Color fillColor, Color borderColor) {
         super(fillColor,borderColor);
         this.length = length;
         this.width = width;

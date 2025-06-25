@@ -29,7 +29,7 @@ abstract public class Shape implements GeometricFigure {
     }
 
     public void toPrint(){
-        System.out.println("Circle{" +
+        System.out.println("Shape{" +
                 " perimeter=" + calculatePerimeter() +
                 " area=" + calculateArea() +
                 " fillColor=" + this.fillColor +

@@ -17,6 +17,7 @@ package Task1;
 public class Cat extends Animal{
 
     private static int count = 0;
+    boolean satiety=false;
 
     public Cat(String name) {
         super(200,0);
@@ -40,4 +41,39 @@ public class Cat extends Animal{
         if(distance > swimDistanceLimit){distance = swimDistanceLimit;}
         System.out.printf("%s пробежал %s м.",name, distance);
     }
+
+
+    public boolean isSatiety() {
+        return satiety;
+    }
+
+    public void setSatiety(boolean satiety) {
+        this.satiety = satiety;
+    }
+
+    /**
+            * Кот пытается покушать.
+     * @param bowl Миска с едой.
+            * @param amount Еда, которую кот пытается съесть.
+     * @return true, если кот поел, false - если еды не хватило.
+            */
+    public boolean eat(Bowl bowl, int amount) {
+        if (bowl.feed(amount)) {
+            this.satiety = true;
+            System.out.println(this.name + " покушал.");
+            return true;
+        } else {
+            System.out.println(this.name + " не смог покушать, еды не хватило.");
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Кот{" +
+                "имя='" + name + '\'' +
+                ", сытость=" + (satiety ? "сыт" : "голоден") +
+                '}';
+    }
+
 }
