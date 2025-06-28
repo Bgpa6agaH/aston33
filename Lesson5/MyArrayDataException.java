@@ -1,4 +1,4 @@
-public class MyArrayDataException extends Exception{
+public class MyArrayDataException extends Exception {
 
     private final int row;
     private final int column;

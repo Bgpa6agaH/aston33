@@ -28,14 +28,13 @@ public class Main {
                 {"0", "1", "2", "3"},
                 {"0", "1", "2", "3"}
         };
-        int sumOfElements=0;
+        int sumOfElements = 0;
         try {
             sumOfElements = sum4x4StringArrayToInt(arrayString);
         } catch (MyArraySizeException | MyArrayDataException e) {
             System.out.println(e.getMessage());
         }
         System.out.println("результат " + sumOfElements + "\n________________");
-
 
 
         System.out.println("проверка MyArraySizeException колонки");
@@ -50,11 +49,12 @@ public class Main {
             sumOfElements = sum4x4StringArrayToInt(arrayString);
         } catch (MyArraySizeException | MyArrayDataException e) {
             System.out.println("Ошибка: " + e.getMessage());
-            if (e.getClass().equals(MyArrayDataException.class)){
+            if (e.getClass().equals(MyArrayDataException.class)) {
                 MyArrayDataException myException = (MyArrayDataException) e;
                 System.out.println("Строка: " + myException.getRow());
                 System.out.println("Столбец: " + myException.getColumn());
-                System.out.println("Неверное значение: " + myException.getInvalidValue());}
+                System.out.println("Неверное значение: " + myException.getInvalidValue());
+            }
         }
 
         System.out.println("________________");
@@ -70,11 +70,12 @@ public class Main {
             sumOfElements = sum4x4StringArrayToInt(arrayString);
         } catch (MyArraySizeException | MyArrayDataException e) {
             System.out.println("Ошибка: " + e.getMessage());
-            if (e.getClass().equals(MyArrayDataException.class)){
+            if (e.getClass().equals(MyArrayDataException.class)) {
                 MyArrayDataException myException = (MyArrayDataException) e;
                 System.out.println("Строка: " + myException.getRow());
                 System.out.println("Столбец: " + myException.getColumn());
-                System.out.println("Неверное значение: " + myException.getInvalidValue());}
+                System.out.println("Неверное значение: " + myException.getInvalidValue());
+            }
         }
         System.out.println("________________");
 
@@ -91,27 +92,28 @@ public class Main {
             sumOfElements = sum4x4StringArrayToInt(arrayString3);
         } catch (MyArraySizeException | MyArrayDataException e) {
             System.out.println("Ошибка: " + e.getMessage());
-            if (e.getClass().equals(MyArrayDataException.class)){
+            if (e.getClass().equals(MyArrayDataException.class)) {
                 MyArrayDataException myException = (MyArrayDataException) e;
                 System.out.println("Строка: " + myException.getRow());
                 System.out.println("Столбец: " + myException.getColumn());
-                System.out.println("Неверное значение: " + myException.getInvalidValue());}
+                System.out.println("Неверное значение: " + myException.getInvalidValue());
+            }
         }
         System.out.println("________________");
 
+        // Напишите код для генерации и поимки ArrayIndexOutOfBoundsException.
+
+        try {
+            generateAndCatchArrayIndexOutOfBounds();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("словил ArrayIndexOutOfBoundsException: " + e.getMessage());
+        }
 
     }
 
 
-
-
-
-
-
-
-
     static int sum4x4StringArrayToInt(String[][] arrayString) throws MyArraySizeException, MyArrayDataException {
-        if (arrayString == null)  {
+        if (arrayString == null) {
             throw new MyArraySizeException("пустая ссылка");
         }
         if (arrayString.length != 4) {
@@ -124,8 +126,8 @@ public class Main {
             }
         }
         int sum = 0;
-        for (int  row = 0; row < 4; row ++) {
-            for (int  column = 0; column < 4; column++) {
+        for (int row = 0; row < 4; row++) {
+            for (int column = 0; column < 4; column++) {
                 try {
                     int number = Integer.parseInt(arrayString[row][column]);
                     sum += number;
@@ -137,4 +139,13 @@ public class Main {
         }
         return sum;
     }
+
+
+    static void generateAndCatchArrayIndexOutOfBounds() throws ArrayIndexOutOfBoundsException {
+        int[] arr = new int[5];
+        int value = arr[10];
+        System.out.println("Значение: " + value);
+    }
+
+
 }
