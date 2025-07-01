@@ -3,48 +3,27 @@ package com.example.Lesson_7_testNg;
 public class Factorial {
 
     /**
-     * Вычисляет факториал числа.
+     * Факториал числа.
      *
-     * @param n Число, факториал которого нужно вычислить.
-     * @return Факториал числа n.  Возвращает -1, если n отрицательное.
+     * @param n число, факториал которого нужно вычислить.
+     * @return Факториал числа n, максимальное значение 2^63-1
      */
     public static long calculateFactorial(int n) {
         if (n < 0) {
-            return -1; // Ошибка: факториал не определен для отрицательных чисел
+            throw new IllegalArgumentException("Аргумент должен быть неотрицательным.");
         }
-        if (n == 0) {
-            return 1; // Факториал 0 равен 1
+
+        if (n > 20) {
+            // Факториал 21 уже превышает максимальное значение long
+            throw new ArithmeticException("Факториал числа " + n + " слишком велик для типа long.");
         }
-        long factorial = 1;
-        for (int i = 1; i <= n; i++) {
-            factorial *= i;
+
+        long result = 1;
+        for (int i = 2; i <= n; i++) {
+            result *= i;
         }
-        return factorial;
+        return result;
     }
 
-    public static void main(String[] args) {
-        int number = 5;
-        long factorial = calculateFactorial(number);
-        if (factorial == -1) {
-            System.out.println("Невозможно вычислить факториал отрицательного числа.");
-        } else {
-            System.out.println("Факториал числа " + number + " равен " + factorial);
-        }
 
-        number = -2;
-        factorial = calculateFactorial(number);
-        if (factorial == -1) {
-            System.out.println("Невозможно вычислить факториал отрицательного числа.");
-        } else {
-            System.out.println("Факториал числа " + number + " равен " + factorial);
-        }
-
-        number = 0;
-        factorial = calculateFactorial(number);
-        if (factorial == -1) {
-            System.out.println("Невозможно вычислить факториал отрицательного числа.");
-        } else {
-            System.out.println("Факториал числа " + number + " равен " + factorial);
-        }
-    }
 }
