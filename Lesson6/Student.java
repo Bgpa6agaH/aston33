@@ -8,7 +8,7 @@ public class Student {
     private String name;
     private String group;
     private int course;
-    private Map<Subject,Integer> subjectGrades;
+    private Map<Subject, Integer> subjectGrades;
 
     public Student(String name, String group, int course) {
         this.name = name;
@@ -34,24 +34,24 @@ public class Student {
     }
 
     public void setGrades(Subject subject, int randomGrade) {
-        subjectGrades.put(subject,randomGrade);
+        subjectGrades.put(subject, randomGrade);
     }
 
-   // OptionalDouble avg =  student.getSubjectGrades().values().stream().mapToInt(Integer::intValue).average();
-    public double getAVGGrades(){
-       return subjectGrades
-               .values()
-               .stream()
-               .mapToInt(Integer::intValue)
-               .average()
-               .orElse(0.0);
+    // OptionalDouble avg =  student.getSubjectGrades().values().stream().mapToInt(Integer::intValue).average();
+    public double getAVGGrades() {
+        return subjectGrades
+                .values()
+                .stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
     }
-
 
 
     public String getName() {
         return name;
     }
+
     public String getGroup() {
         return group;
     }

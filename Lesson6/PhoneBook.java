@@ -19,13 +19,23 @@ import java.util.Set;
 
 public class PhoneBook {
 
-    HashMap <String, Set<Long>> repository = new HashMap<>();
+    HashMap<String, Set<Long>> repository = new HashMap<>();
 
-    public void add(String key, Long number){
-        repository.computeIfAbsent(key,k ->new HashSet<Long>()).add(number);
+    public void add(String key, Long number) {
+        boolean found = false;
+        for (Set<Long> set : repository.values()) {
+            if (set.contains(number)) {
+                found = true;
+                System.out.println("номер " + number + " уже есть в базе");
+                System.out.println("запись не добавлена");
+                break;
+            }
+        }
+
+        repository.computeIfAbsent(key, k -> new HashSet<Long>()).add(number);
     }
 
-    public Optional<Set<Long>> get(String key){
-        return Optional.ofNullable(repository.get(key)) ;
+    public Optional<Set<Long>> get(String key) {
+        return Optional.ofNullable(repository.get(key));
     }
 }

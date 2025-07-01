@@ -70,7 +70,7 @@ public class Main {
         var students = new HashSet<Student>();
 
         for (int i = 0; i < 10; i++) {
-            //создаю символы для имени студента
+            //создаю имя шифр студента
             var arr = new char[]{
                     (char) (65 + new Random().nextInt(25)),
                     (char) (97 + new Random().nextInt(25)),
@@ -135,30 +135,24 @@ public class Main {
         PhoneBook phoneBook = new PhoneBook();
 
 
-        phoneBook.add("Фамилия",  88005553535L );
-        phoneBook.add("Фамилия",  88002000000L );
-        phoneBook.add("Фамилия2",  81234567890L );
+        phoneBook.add("Фамилия", 88005553535L);
+        phoneBook.add("Фамилия", 88002000000L);
+        phoneBook.add("Фамилия2", 81234567890L);
+        phoneBook.add("Фамилия3", 81234567890L);
 
-        Optional<Set<Long>> numbers = phoneBook.get("Фамилия");
-        System.out.println("Поиск: "+"Фамилия");
-        numbers.ifPresentOrElse(
-                value -> System.out.println("Номера: " + value),
-                () -> System.out.println("Item not found")
-        );
+        var keys = new String[]{"Фамилия", "Фамилия2", "Фамилия3", "Фамилия4"};
+        for (String key : keys) {
 
-        numbers = phoneBook.get("Фамилия2");
-        System.out.println("Поиск: "+"Фамилия2");
-        numbers.ifPresentOrElse(
-                value -> System.out.println("Номера: " + value),
-                () -> System.out.println("Item not found")
-        );
+            Optional<Set<Long>> numbers = phoneBook.get(key);
+            System.out.println("Поиск: " + key);
+            numbers.ifPresentOrElse(
+                    value -> System.out.println("Номера: " + value),
+                    () -> System.out.println("Item not found")
+            );
 
-        numbers = phoneBook.get("Фамилия3");
-        System.out.println("Поиск: "+"Фамилия3");
-        numbers.ifPresentOrElse(
-                value -> System.out.println("Номера: " + value),
-                () -> System.out.println("Item not found")
-        );
+        }
+
+
     }
 
 
