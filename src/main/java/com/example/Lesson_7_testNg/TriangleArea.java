@@ -11,29 +11,15 @@ public class TriangleArea {
      */
     public static double calculateArea(double base, double height) {
         if (base < 0 || height < 0) {
-            return -1; // Ошибка: основание и высота должны быть неотрицательными
+            return -1;
         }
-        return 0.5 * base * height;
+
+        double area = 0.5 * base * height;
+        if (Double.isInfinite(area)) {
+            throw new ArithmeticException("Площадь треугольника слишком велика для представления типом double.");
+        }
+        return area;
     }
 
-    public static void main(String[] args) {
-        double base = 10.0;
-        double height = 5.0;
-        double area = calculateArea(base, height);
-        if (area == -1) {
-            System.out.println("Основание и высота должны быть неотрицательными.");
-        } else {
-            System.out.println("Площадь треугольника с основанием " + base + " и высотой " + height + " равна " + area);
-        }
 
-        base = -3;
-        height = 6.0;
-        area = calculateArea(base, height);
-        if (area == -1) {
-            System.out.println("Основание и высота должны быть неотрицательными.");
-        } else {
-            System.out.println("Площадь треугольника с основанием " + base + " и высотой " + height + " равна " + area);
-        }
-
-    }
 }

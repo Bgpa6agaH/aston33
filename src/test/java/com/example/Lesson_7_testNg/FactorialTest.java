@@ -9,7 +9,8 @@ public class FactorialTest {
     @Test(dataProvider = "validFactorialData")
     public void testCalculateFactorialValidInput(int n, long expectedFactorial) {
         long actualFactorial = Factorial.calculateFactorial(n);
-        Assert.assertEquals(actualFactorial, expectedFactorial, "Факториал числа " + n + " рассчитан неверно.");
+        Assert.assertEquals(actualFactorial, expectedFactorial,
+                "Факториал числа " + n + " рассчитан неверно.");
     }
 
     @DataProvider(name = "validFactorialData")
