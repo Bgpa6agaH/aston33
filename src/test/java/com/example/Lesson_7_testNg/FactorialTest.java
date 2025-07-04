@@ -15,7 +15,7 @@ public class FactorialTest {
 
     @DataProvider(name = "validFactorialData")
     public Object[][] validFactorialData() {
-        return new Object[][] {
+        return new Object[][]{
                 {0, 1},
                 {1, 1},
                 {5, 120},
@@ -33,9 +33,6 @@ public class FactorialTest {
     public void testCalculateFactorialOverflowThrowsException() {
         Factorial.calculateFactorial(21);
     }
-
-
-
 
 
 }

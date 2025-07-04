@@ -17,20 +17,8 @@ public class NumberComparison {
             System.out.println(a + " меньше " + b);
             return;
         }
-            System.out.println(a + " равно " + b);
+        System.out.println(a + " равно " + b);
     }
 
-    public static void main(String[] args) {
-        int num1 = 15;
-        int num2 = 7;
-        compareNumbers(num1, num2);
 
-        num1 = 3;
-        num2 = 9;
-        compareNumbers(num1, num2);
-
-        num1 = 4;
-        num2 = 4;
-        compareNumbers(num1, num2);
-    }
 }

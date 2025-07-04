@@ -19,14 +19,14 @@ public class NumberComparisonTest {
         NumberComparison.compareNumbers(a, b);
 
         System.setOut(originalOut);
-        return outputStream.toString().trim(); // Обрезаем пробелы в начале и конце
+        return outputStream.toString().trim();
     }
 
     @Test
     public void testCompareNumbers_aGreaterThanB() {
         int a = 5;
         int b = 2;
-        String expectedOutput = a+" больше "+b;
+        String expectedOutput = a + " больше " + b;
         String actualOutput = getConsoleOutput(a, b);
         assertEquals(actualOutput, expectedOutput, "Тест 1: Ошибка при a > b");
     }
@@ -35,7 +35,7 @@ public class NumberComparisonTest {
     public void testCompareNumbers_aLessThanB() {
         int a = 2;
         int b = 5;
-        String expectedOutput = a+" меньше "+b;
+        String expectedOutput = a + " меньше " + b;
         String actualOutput = getConsoleOutput(a, b);
         assertEquals(actualOutput, expectedOutput, "Тест 2: Ошибка при a < b");
     }
@@ -44,7 +44,7 @@ public class NumberComparisonTest {
     public void testCompareNumbers_aEqualsB() {
         int a = 3;
         int b = 3;
-        String expectedOutput = a+" равно "+b;
+        String expectedOutput = a + " равно " + b;
         String actualOutput = getConsoleOutput(a, b);
         assertEquals(actualOutput, expectedOutput, "Тест 3: Ошибка при a = b");
     }
