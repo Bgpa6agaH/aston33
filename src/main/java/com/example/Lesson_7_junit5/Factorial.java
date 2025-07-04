@@ -1,4 +1,4 @@
-package com.example.Lesson_7_testNg;
+package com.example.Lesson_7_junit5;
 
 public class Factorial {
 
