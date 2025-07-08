@@ -25,9 +25,12 @@ public class PostRawTextTest {
         String expectedDate = LocalDate.now()
                 .format(DateTimeFormatter.ofPattern("EEE, dd MMM yyyy", Locale.US));
 
-        given().body(row)
+        given()
+                .log().all()
+                .body(row)
                 .when().post("/post")
                 .then()
+                .log().all()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
                 .header("date", containsString(expectedDate))

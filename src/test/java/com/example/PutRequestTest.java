@@ -19,10 +19,12 @@ public class PutRequestTest {
     @Test
     public void testSuccessfulPutRequest() {
         given()
+                .log().all()
                 .body("This is expected to be sent back as part of response body.")
                 .when()
                 .put("/put")
                 .then()
+                .log().all()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
                 .body("data", equalTo("This is expected to be sent back as part of response body."))

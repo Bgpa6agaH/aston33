@@ -19,11 +19,13 @@ public class GetRequestTest {
     @Test
     public void testSuccessfulGetRequest() {
         given()
+                .log().all()
                 .queryParam("foo1", "bar1")
                 .queryParam("foo2", "bar2")
                 .when()
                 .get("/get")
                 .then()
+                .log().all()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
                 .body("args.foo1", equalTo("bar1"))

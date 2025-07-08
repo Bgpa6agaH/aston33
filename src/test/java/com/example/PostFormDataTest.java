@@ -23,11 +23,13 @@ public class PostFormDataTest {
     public void testSuccessfulPostFormData() {
 
         given()
+                .log().all()
                 .contentType("application/x-www-form-urlencoded; charset=utf-8")
                 .formParam("foo1", "bar1")
                 .formParam("foo2", "bar2")
                 .when().post("/post")
                 .then()
+                .log().all()
                 .statusCode(200)
                 .contentType("application/json; charset=utf-8")
                 .body("form.foo1", equalTo("bar1"))
