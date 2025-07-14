@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import pages.PayPage;
 
 import java.time.Duration;
 
@@ -28,7 +29,7 @@ public class PayWrapperTest {
     WebDriver driver;
     WebDriverWait wait;
     WebElement paySection;
-
+    private PayPage payPage;
 
     @BeforeClass
     void setupClass() {
