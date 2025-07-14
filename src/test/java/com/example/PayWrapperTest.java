@@ -25,9 +25,9 @@ import java.time.Duration;
 
 public class PayWrapperTest {
 
-    WebDriver driver;
-    WebDriverWait wait;
-    WebElement paySection;
+    private WebDriver driver;
+    private WebDriverWait wait;
+    private WebElement paySection;
 
 
     @BeforeClass
