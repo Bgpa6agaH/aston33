@@ -31,8 +31,9 @@ public class PhoneBook {
                 break;
             }
         }
-
-        repository.computeIfAbsent(key, k -> new HashSet<Long>()).add(number);
+        if (!found) {
+            repository.computeIfAbsent(key, k -> new HashSet<Long>()).add(number);
+        }
     }
 
     public Optional<Set<Long>> get(String key) {
