@@ -31,62 +31,9 @@ public class PayFrame {
 
     By buttonLocator = By.xpath("//button[contains(text(), 'Оплатить')]");
 
-
-    //2)Для варианта «Услуги связи» заполнить поля в соответствии с пререквизитами из предыдущей темы,
-    //нажать кнопку «Продолжить» и в появившемся окне проверить корректность
-    //отображения суммы (в том числе на кнопке),
-    //<div _ngcontent-ng-c3137724728="" class="pay-description__cost">
-    //  <span _ngcontent-ng-c3137724728="">100.00 BYN</span><!----><!---->
-    //</div>
     By payDescriptionCostLocator = By.className("pay-description__cost");
-
-
-    //номера телефона, а также надписей в незаполненных полях для ввода
-    //<div _ngcontent-ng-c3137724728="" class="pay-description__text">
-    //  <span _ngcontent-ng-c3137724728="">Оплата: Услуги связи Номер:375297777777</span>
-    //</div>
     By payDescriptionTextLocator = By.className("pay-description__text");
 
-    public String getTextPayDescriptionText() {
-
-        return driver.findElement(payDescriptionTextLocator).getText();
-    }
-
-    //реквизитов карты,
-    //By creditCardLocator = By.cssSelector("input[formcontrolname='creditCard']");
-    public String getTextCreditCard() {
-        return wait.until(
-                        ExpectedConditions
-                                .visibilityOfElementLocated(creditCardLabelLocator)
-                )
-                .getText();
-
-    }
-
-    //By expirationDateLocator = By.cssSelector("input[formcontrolname='expirationDate']");
-    public String getTextExpirationDate() {
-        return driver.findElement(expirationDateLabelLocator).getText();
-    }
-
-    //By cvcLocator = By.cssSelector("input[formcontrolname='cvc']");
-    public String getTextCvc() {
-        return driver.findElement(cvcLabelLocator).getText();
-    }
-
-    //By holderLocator = By.cssSelector("input[formcontrolname='holder']");
-    public String getTextHolder() {
-        return driver.findElement(holderLabelLocator).getText();
-    }
-
-    //наличие иконок платёжных систем.
-//<div _ngcontent-ng-c891095944="" class="cards-brands cards-brands__container ng-tns-c891095944-0 ng-trigger ng-trigger-brandsState ng-star-inserted">
-// <img _ngcontent-ng-c891095944="" class="ng-tns-c891095944-0 ng-star-inserted" src="assets/images/payment-icons/card-types/visa-system.svg" style="">
-// <img _ngcontent-ng-c891095944="" class="ng-tns-c891095944-0 ng-star-inserted" src="assets/images/payment-icons/card-types/mastercard-system.svg" style="">
-// <img _ngcontent-ng-c891095944="" class="ng-tns-c891095944-0 ng-star-inserted" src="assets/images/payment-icons/card-types/belkart-system.svg" style=""><!---->
-// <div _ngcontent-ng-c891095944="" class="cards-brands cards-brands_random ng-tns-c891095944-0 ng-star-inserted" style="">
-// <img _ngcontent-ng-c891095944="" class="ng-tns-c891095944-0 ng-trigger ng-trigger-randomCardState ng-star-inserted ng-animating" src="assets/images/payment-icons/card-types/maestro-system.svg" style="">
-// <img _ngcontent-ng-c891095944="" class="ng-tns-c891095944-0 ng-trigger ng-trigger-randomCardState ng-star-inserted ng-animating" src="assets/images/payment-icons/card-types/mir-system-ru.svg" style=""><!----></div><!----></div>
-    By containerCardsBrandsLocator = By.cssSelector("cards-brands__container");
     By contentContainerLocator = By.className("content-container");
     By iconsContainerLocator = By.className("icons-container");
 
@@ -156,8 +103,8 @@ public class PayFrame {
 
 
         WebElement container = wait.until(
-                ExpectedConditions
-                        .presenceOfElementLocated(contentContainerLocator))
+                        ExpectedConditions
+                                .presenceOfElementLocated(contentContainerLocator))
                 .findElement(iconsContainerLocator);
 
 
@@ -166,5 +113,31 @@ public class PayFrame {
                 ExpectedConditions.visibilityOf(icons.get(0))
         );
         return icons;
+    }
+
+    public String getTextPayDescriptionText() {
+
+        return driver.findElement(payDescriptionTextLocator).getText();
+    }
+
+    public String getTextCreditCard() {
+        return wait.until(
+                        ExpectedConditions
+                                .visibilityOfElementLocated(creditCardLabelLocator)
+                )
+                .getText();
+
+    }
+
+    public String getTextExpirationDate() {
+        return driver.findElement(expirationDateLabelLocator).getText();
+    }
+
+    public String getTextCvc() {
+        return driver.findElement(cvcLabelLocator).getText();
+    }
+
+    public String getTextHolder() {
+        return driver.findElement(holderLabelLocator).getText();
     }
 }

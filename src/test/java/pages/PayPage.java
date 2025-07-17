@@ -174,7 +174,6 @@ public class PayPage {
     }
 
 
-
     // домашний интернет,
     //By HomeInternetLocator = By.xpath("//p[text()='Домашний интернет']");
     public void selectListPayItemHomeInternet() {
@@ -183,16 +182,19 @@ public class PayPage {
         );
         listPaySelectElement.findElement(homeInternetLocator).click();
     }
+
     //<input class="phone" id="internet-phone" type="text" placeholder="Номер абонента" required="" maxlength="13" autocomplete="off">
     //By internetPhoneLocator = By.id("internet-phone");
     public String getPlaceholderInternetPhone() {
         return paySection.findElement(internetPhoneLocator).getAttribute("placeholder");
     }
+
     //<input class="total_rub" id="internet-sum" type="text" placeholder="Сумма" required="">
     //By internetSumLocator = By.id("internet-sum");
     public String getPlaceholderInternetSum() {
         return paySection.findElement(internetSumLocator).getAttribute("placeholder");
     }
+
     //<input class="email" id="internet-email" type="text" placeholder="E-mail для отправки чека">
     //By internetEmailPlaceholderLocator = By.id("internet-email");
     public String getPlaceholderInternetEmail() {
@@ -206,14 +208,17 @@ public class PayPage {
         );
         listPaySelectElement.findElement(installmentPlanLocator).click();
     }
+
     //<input class="score" id="score-instalment" type="text" placeholder="Номер счета на 44" data-mask="account-num-instalment" required="">
     public String getPlaceholderInstalmentScore() {
         return paySection.findElement(instalmentScoreLocator).getAttribute("placeholder");
     }
+
     //<input class="total_rub" id="instalment-sum" type="text" placeholder="Сумма" required="">
     public String getPlaceholderInstalmentSum() {
         return paySection.findElement(instalmentSumLocator).getAttribute("placeholder");
     }
+
     //<input class="email" id="instalment-email" type="text" placeholder="E-mail для отправки чека">
     public String getPlaceholderInstalmentEmail() {
         return paySection.findElement(instalmentEmailPlaceholderLocator).getAttribute("placeholder");
@@ -227,14 +232,17 @@ public class PayPage {
         );
         listPaySelectElement.findElement(arrearsLocator).click();
     }
+
     //<input class="score" id="score-arrears" type="text" placeholder="Номер счета на 2073" data-mask="account-num-arrears" required="">
     public String getPlaceholderArrearsScore() {
         return paySection.findElement(arrearsScoreLocator).getAttribute("placeholder");
     }
+
     //<input class="total_rub" id="arrears-sum" type="text" placeholder="Сумма" required="">
     public String getPlaceholderArrearsSum() {
         return paySection.findElement(arrearsSumLocator).getAttribute("placeholder");
     }
+
     //<input class="email" id="arrears-email" type="text" placeholder="E-mail для отправки чека">
     public String getPlaceholderArrearsEmail() {
         return paySection.findElement(arrearsEmailPlaceholderLocator).getAttribute("placeholder");
