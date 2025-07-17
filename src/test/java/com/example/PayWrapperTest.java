@@ -10,9 +10,14 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import org.testng.asserts.SoftAssert;
+import pages.PayFrame;
 import pages.PayPage;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 /*
@@ -24,12 +29,22 @@ import java.time.Duration;
 (проверяем только вариант «Услуги связи», номер для теста 297777777)
  */
 
+/*
+1)Проверить надписи в незаполненных полях каждого варианта оплаты услуг:
+услуги связи, домашний интернет, рассрочка, задолженность;
+
+2)Для варианта «Услуги связи» заполнить поля в соответствии с пререквизитами из предыдущей темы,
+нажать кнопку «Продолжить» и в появившемся окне проверить корректность отображения суммы
+(в том числе на кнопке), номера телефона, а также надписей в незаполненных полях для ввода реквизитов карты,
+наличие иконок платёжных систем.
+ */
+
+
 public class PayWrapperTest {
 
-    WebDriver driver;
-    WebDriverWait wait;
-    WebElement paySection;
+    private WebDriver driver;
     private PayPage payPage;
+
 
     @BeforeClass
     void setupClass() {
@@ -38,24 +53,25 @@ public class PayWrapperTest {
         driver.manage().window().maximize();
         driver.get("https://www.mts.by/");
         driver.manage().deleteAllCookies();
-        wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        WebElement cookieAcceptElement = wait.until(
-                ExpectedConditions.elementToBeClickable(By.id("cookie-agree"))
-        );
-        cookieAcceptElement.click();
+        driver.navigate().refresh();
+        payPage = new PayPage(driver);
+        payPage.agreeCookie();
     }
+
 
     @BeforeMethod
     public void setUp() {
-        By payLocator = By.className("pay");
-        this.paySection = wait.until(
-                ExpectedConditions.presenceOfElementLocated(payLocator)
-        );
+        driver.get("https://www.mts.by/");
+        payPage = new PayPage(driver);
     }
 
-
-    @AfterClass
+    @AfterMethod
     public void tearDown() {
+        driver.switchTo().defaultContent();
+        payPage = new PayPage(driver);
+    }
+    @AfterClass
+    public void quitDriver() {
         if (driver != null) {
             driver.manage().deleteAllCookies();
             driver.quit();
@@ -65,21 +81,18 @@ public class PayWrapperTest {
 
 //1) Проверить название указанного блока;
 
-    @Test
+    @Test(priority = 1)
     public void testPayWrapperTitle() {
-
-        WebElement h2Element = paySection.findElement(By.tagName("h2"));
-        String h2Text = h2Element.getText();
-        Assert.assertEquals(h2Text, "Онлайн пополнение\nбез комиссии",
+        WebElement h2Element = payPage.getH2Element();
+        Assert.assertEquals(h2Element.getText(), "Онлайн пополнение\nбез комиссии",
                 "Название блока отличается от 'Онлайн пополнение без комиссии'");
     }
 
     //2) Проверить наличие логотипов платёжных систем;
-    @Test
+    @Test(priority = 2)
     public void testPayWrapperLogos() {
-        WebElement paymentSystemsList = paySection.findElement(By.className("pay__partners"));
+        WebElement paymentSystemsList = payPage.getPayPartners();
         var listItems = paymentSystemsList.findElements(By.tagName("li"));
-
         Assert.assertFalse(listItems.isEmpty(), "Список платежных систем пуст");
         for (WebElement item : listItems) {
             WebElement image = item.findElement(By.tagName("img"));
@@ -111,11 +124,12 @@ public class PayWrapperTest {
 
 
     //3)Проверить работу ссылки «Подробнее о сервисе»;
-    @Test
-    public void testInfoLink() {
-        var linkElement = paySection.findElement(By.linkText("Подробнее о сервисе"));
-        linkElement.click();
 
+
+
+    @Test(priority = 3)
+    public void testInfoLink() {
+        payPage.clickInfoLink();
         String title = driver.getTitle();
         Assert.assertEquals(driver.getCurrentUrl(),
                 "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/",
@@ -124,73 +138,159 @@ public class PayWrapperTest {
         Assert.assertEquals(title,
                 "Порядок оплаты и безопасность интернет платежей",
                 "Заголовок отличается от ожидаемого");
-
         driver.get("https://www.mts.by/");
+        payPage = new PayPage(driver);
     }
+
+
 
     //4)Заполнить поля и проверить работу кнопки «Продолжить»
 //(проверяем только вариант «Услуги связи», номер для теста 297777777)
-    @Test
+    @Test(priority = 4)
     public void testSubmitCommunicationServicesPayment() {
-        var phoneElement = paySection.findElement(By.id("connection-phone"));
-        var sumElement = paySection.findElement(By.id("connection-sum"));
-        var buttonElement = paySection.findElement(By.id("pay-connection")).findElement(By.className("button__default"));
-        phoneElement.click();
-        phoneElement.sendKeys("297777777");
-        sumElement.click();
-        sumElement.sendKeys("100");
-        WebElement continueButton = wait.until(
-                ExpectedConditions.elementToBeClickable(buttonElement));
-        continueButton.click();
-        WebElement iframeElement = wait.until(
-                ExpectedConditions.presenceOfElementLocated(By.className("bepaid-iframe")));
-        driver.switchTo().frame(iframeElement);
-        WebElement titleElement = driver.findElement(By.tagName("title"));
-        String title = titleElement.getAttribute("textContent");
+
+        String number = "297777777";
+        payPage.inputPhone(number);
+        String sum = "100";
+        payPage.inputSum(sum);
+        payPage.clickPayNextButton();
+
+        WebElement iFrameElement = payPage.getFrameElement();
+        driver.switchTo().frame(iFrameElement);
+        PayFrame payFrame = new PayFrame(driver);
+
+        String title = payFrame.getTitle().getAttribute("textContent");
         Assert.assertEquals(title, "BePaidWidget",
                 "Заголовок фрейма отличается от ожидаемого.");
 
-        /*
-id="cc-number"
-4024 0071 2387 4108
-*/
-        WebElement numberElement = wait.until(
-                ExpectedConditions.presenceOfElementLocated(
-                        By.cssSelector("input[formcontrolname='creditCard']")));
 
-        numberElement.click();
-        numberElement.sendKeys("4024007123874108");
-/*
-formcontrolname="expirationDate"
-02 / 25
-        */
-        WebElement expirationDateElement = driver.
-                findElement(By.cssSelector("input[formcontrolname='expirationDate']"));
-        expirationDateElement.click();
-        expirationDateElement.sendKeys("0225");
+        boolean isEnabledButtonPay = payFrame
+                .inputNumber()
+                .inputExpirationDate()
+                .inputCvc()
+                .inputHolder()
+                .isEnabledButtonPay();
 
-/*
-formcontrolname="cvc"
-123
-        */
-        WebElement cvcElement = driver.
-                findElement(By.cssSelector("input[formcontrolname='cvc']"));
-        cvcElement.click();
-        cvcElement.sendKeys("123");
-/*
-formcontrolname="holder"
-IVAN IVANOV
-*/
-        WebElement holderElement = driver.
-                findElement(By.cssSelector("input[formcontrolname='holder']"));
-        holderElement.click();
-        holderElement.sendKeys("IVAN IVANOV");
+        Assert.assertTrue(isEnabledButtonPay, "кнопка 'Оплатить ...'  не активная");
 
-        WebElement buttonPayElement = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Оплатить')]")));
-
-        Assert.assertTrue(buttonPayElement.isEnabled(), "кнопка 'Оплатить ...'  не активная");
     }
 
+
+    //1)Проверить надписи в незаполненных полях каждого варианта оплаты услуг:
+//услуги связи,
+    @Test(priority = 5)
+    public void testTextCommunicationServicesPayment() {
+        payPage.clickButtonPaySelect();
+        payPage.selectListPayItemCommunicationServices();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(payPage.getPlaceholderConnectionPhone(), "Номер телефона");
+        softAssert.assertEquals(payPage.getTextConnectionPhoneLabel(), "+375");
+        softAssert.assertEquals(payPage.getPlaceholderConnectionSum(), "Сумма");
+        softAssert.assertEquals(payPage.getTextConnectionSumLabel(), "Руб.");
+        softAssert.assertEquals(payPage.getPlaceholderConnectionEmail(), "E-mail для отправки чека");
+        softAssert.assertAll();
+
+    }
+
+//1)Проверить надписи в незаполненных полях каждого варианта оплаты услуг:
+    //домашний интернет
+
+    @Test(priority = 6)
+    public void testTextHomeInternetPayment() {
+        payPage.clickButtonPaySelect();
+        payPage.selectListPayItemHomeInternet();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(payPage.getPlaceholderInternetPhone(), "Номер абонента");
+        softAssert.assertEquals(payPage.getPlaceholderInternetSum(), "Сумма");
+        softAssert.assertEquals(payPage.getPlaceholderInternetEmail(), "E-mail для отправки чека");
+
+        softAssert.assertAll();
+    }
+
+    //1)Проверить надписи в незаполненных полях каждого варианта оплаты услуг:
+    // рассрочка
+    @Test(priority = 7)
+    public void testTextInstalmentPayment() {
+        payPage.clickButtonPaySelect();
+        payPage.selectListPayItemInstallmentPlan();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(payPage.getPlaceholderInstalmentScore(), "Номер счета на 44");
+        softAssert.assertEquals(payPage.getPlaceholderInstalmentSum(), "Сумма");
+        softAssert.assertEquals(payPage.getPlaceholderInstalmentEmail(), "E-mail для отправки чека");
+
+        softAssert.assertAll();
+    }
+
+    //1)Проверить надписи в незаполненных полях каждого варианта оплаты услуг:
+    // задолженность;
+    @Test(priority = 8)
+    public void testTextArrearsPayment() {
+        payPage.clickButtonPaySelect();
+        payPage.selectListPayItemArrears();
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(payPage.getPlaceholderArrearsScore(), "Номер счета на 2073");
+        softAssert.assertEquals(payPage.getPlaceholderArrearsSum(), "Сумма");
+        softAssert.assertEquals(payPage.getPlaceholderArrearsEmail(), "E-mail для отправки чека");
+
+        softAssert.assertAll();
+    }
+
+    //2)Для варианта «Услуги связи» заполнить поля в соответствии с пререквизитами из предыдущей темы,
+    //нажать кнопку «Продолжить» и в появившемся окне проверить корректность отображения суммы
+    //(в том числе на кнопке), номера телефона, а также надписей в незаполненных полях для ввода реквизитов карты,
+    //наличие иконок платёжных систем.
+
+    @Test(priority = 9)
+    public void testTextSubmitCommunicationServicesPayment() {
+        SoftAssert softAssert = new SoftAssert();
+        String number = "297777777";
+        payPage.inputPhone(number);
+        String sum = "100";
+        payPage.inputSum(sum);
+        payPage.clickPayNextButton();
+
+        WebElement iFrameElement = payPage.getFrameElement();
+        driver.switchTo().frame(iFrameElement);
+
+        PayFrame payFrame = new PayFrame(driver);
+
+        softAssert.assertEquals(payFrame.getTextPayDescriptionCost(), sum + ".00 BYN");
+        softAssert.assertEquals(payFrame.getTextPayDescriptionText(), "Оплата: Услуги связи Номер:375" + number);
+
+        softAssert.assertEquals(payFrame.getTextCreditCard(), "Номер карты");
+        softAssert.assertEquals(payFrame.getTextExpirationDate(), "Срок действия");
+        softAssert.assertEquals(payFrame.getTextCvc(), "CVC");
+        softAssert.assertEquals(payFrame.getTextHolder(), "Имя и фамилия на карте");
+
+        softAssert.assertAll();
+    }
+    @Test(priority = 10)
+    public void testIconVisibilitySubmitCommunicationServicesPayment() {
+        SoftAssert softAssert = new SoftAssert();
+        String number = "297777777";
+        payPage.inputPhone(number);
+        String sum = "100";
+        payPage.inputSum(sum);
+        payPage.clickPayNextButton();
+
+        WebElement iFrameElement = payPage.getFrameElement();
+        driver.switchTo().frame(iFrameElement);
+        PayFrame payFrame = new PayFrame(driver);
+
+        List<WebElement> icons = payFrame.getListIcons();
+
+        for (WebElement icon : icons) {
+
+            String style = icon.getAttribute("style");
+
+            softAssert.assertTrue(icon.isDisplayed() || Objects.requireNonNull(style).contains("opacity: 0") , "Иконка не видна: " + icon.getAttribute("src"));
+        }
+        softAssert.assertAll();
+    }
 
 }
 
