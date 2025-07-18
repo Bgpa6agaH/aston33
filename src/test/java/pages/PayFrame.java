@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -48,7 +49,7 @@ public class PayFrame {
         return driver.findElement(titleLocator);
     }
 
-
+    @Step("Ввод номера карты: 4024007123874108")
     public PayFrame inputNumber() {
         WebElement numberElement = wait.until(
                 ExpectedConditions.presenceOfElementLocated(creditCardLocator)
@@ -58,6 +59,7 @@ public class PayFrame {
         return this;
     }
 
+    @Step("Ввод срока карты: 0225")
     public PayFrame inputExpirationDate() {
         WebElement expirationDateElement = driver.findElement(expirationDateLocator);
         expirationDateElement.click();
@@ -65,7 +67,7 @@ public class PayFrame {
         return this;
     }
 
-
+    @Step("Ввод Cvc: 123")
     public PayFrame inputCvc() {
         WebElement cvcElement = driver.findElement(cvcLocator);
         cvcElement.click();
@@ -73,7 +75,7 @@ public class PayFrame {
         return this;
     }
 
-
+    @Step("Ввод держателя карты: IVAN IVANOV")
     public PayFrame inputHolder() {
         WebElement holderElement = driver.findElement(holderLocator);
         holderElement.click();

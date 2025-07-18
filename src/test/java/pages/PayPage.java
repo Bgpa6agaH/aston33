@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -32,46 +33,29 @@ public class PayPage {
     By listPaySelectLocator = By.className("select__list");
 
 
-    //услуги связи,
     By CommunicationServicesLocator = By.xpath("//p[text()='Услуги связи']");
 
-    //+<input class="phone" id="connection-phone" type="text" placeholder="Номер телефона" required="" maxlength="13" autocomplete="off">
-    //<label for="connection-phone">+375</label>
     By connectionPhoneLabelLocator = By.cssSelector("label[for='connection-phone']");
 
-    //+<input class="total_rub" id="connection-sum" type="text" placeholder="Сумма" required="">
-
-    //<label for="connection-sum">Руб.</label>
     By connectionSumLabelLocator = By.cssSelector("label[for='connection-sum']");
 
-    //<input class="email" id="connection-email" type="text" placeholder="E-mail для отправки чека">
     By connectionEmailPlaceholderLocator = By.id("connection-email");
 
-    // домашний интернет,
+
     By homeInternetLocator = By.xpath("//p[text()='Домашний интернет']");
-    //<input class="phone" id="internet-phone" type="text" placeholder="Номер абонента" required="" maxlength="13" autocomplete="off">
     By internetPhoneLocator = By.id("internet-phone");
-    //<input class="total_rub" id="internet-sum" type="text" placeholder="Сумма" required="">
     By internetSumLocator = By.id("internet-sum");
-    //<input class="email" id="internet-email" type="text" placeholder="E-mail для отправки чека">
     By internetEmailPlaceholderLocator = By.id("internet-email");
 
-    // рассрочка,
     By installmentPlanLocator = By.xpath("//p[text()='Рассрочка']");
-    //<input class="score" id="score-instalment" type="text" placeholder="Номер счета на 44" data-mask="account-num-instalment" required="">
     By instalmentScoreLocator = By.id("score-instalment");
-    //<input class="total_rub" id="instalment-sum" type="text" placeholder="Сумма" required="">
     By instalmentSumLocator = By.id("instalment-sum");
-    //<input class="email" id="instalment-email" type="text" placeholder="E-mail для отправки чека">
     By instalmentEmailPlaceholderLocator = By.id("instalment-email");
 
-    // задолженность
+
     By arrearsLocator = By.xpath("//p[text()='Задолженность']");
-    //<input class="score" id="score-arrears" type="text" placeholder="Номер счета на 2073" data-mask="account-num-arrears" required="">
     By arrearsScoreLocator = By.id("score-arrears");
-    //<input class="total_rub" id="arrears-sum" type="text" placeholder="Сумма" required="">
     By arrearsSumLocator = By.id("arrears-sum");
-    //<input class="email" id="arrears-email" type="text" placeholder="E-mail для отправки чека">
     By arrearsEmailPlaceholderLocator = By.id("arrears-email");
 
 
@@ -81,6 +65,7 @@ public class PayPage {
         this.paySection = wait.until(ExpectedConditions.presenceOfElementLocated(payLocator));
     }
 
+    @Step("Обработка файлов cookie: принять")
     public void agreeCookie() {
         WebElement cookieAcceptElement = wait.until(
                 ExpectedConditions.elementToBeClickable(cookieLocator)
@@ -88,9 +73,6 @@ public class PayPage {
         cookieAcceptElement.click();
     }
 
-    public WebElement getPaySection() {
-        return paySection;
-    }
 
     public WebElement getH2Element() {
         return paySection.findElement(h2Locator);
@@ -100,25 +82,27 @@ public class PayPage {
         return paySection.findElement(paymentSystemsListLocator);
     }
 
-
+    @Step("клик на 'Подробнее о сервисе'")
     public void clickInfoLink() {
         var linkElement = paySection.findElement(infoLinkLocator);
         linkElement.click();
     }
 
+    @Step("Ввод телефона: {number}")
     public void inputPhone(String number) {
         var phoneElement = paySection.findElement(connectionPhoneLocator);
         phoneElement.click();
         phoneElement.sendKeys(number);
     }
 
-
+    @Step("Ввод суммы: {sum}")
     public void inputSum(String sum) {
         var sumElement = paySection.findElement(connectionSumLocator);
         sumElement.click();
         sumElement.sendKeys(sum);
     }
 
+    @Step("Клик на кнопку 'Продолжить'")
     public void clickPayNextButton() {
         var buttonElement = paySection.findElement(payConnectionLocator).findElement(buttonDefaultLocator);
         WebElement continueButton = wait.until(
@@ -131,14 +115,15 @@ public class PayPage {
                 ExpectedConditions.presenceOfElementLocated(bePaidFrameLocator));
     }
 
+    @Step("Клик на Accordion")
     public void clickButtonPaySelect() {
-
         wait.until(
                 ExpectedConditions.presenceOfElementLocated(buttonPaySelectLocator));
         var buttonElement = paySection.findElement(buttonPaySelectLocator);
         buttonElement.click();
     }
 
+    @Step("Выбрать в Accordion Услуги связи")
     public void selectListPayItemCommunicationServices() {
         WebElement listPaySelectElement = wait.until(
                 ExpectedConditions.presenceOfElementLocated(listPaySelectLocator)
@@ -148,34 +133,27 @@ public class PayPage {
     }
 
 
-    //+<input class="phone" id="connection-phone" type="text" placeholder="Номер телефона" required="" maxlength="13" autocomplete="off">
     public String getPlaceholderConnectionPhone() {
         return paySection.findElement(connectionPhoneLocator).getAttribute("placeholder");
     }
 
-    //<label for="connection-phone">+375</label>
     public String getTextConnectionPhoneLabel() {
         return paySection.findElement(connectionPhoneLabelLocator).getText();
     }
 
-    //+<input class="total_rub" id="connection-sum" type="text" placeholder="Сумма" required="">
     public String getPlaceholderConnectionSum() {
         return paySection.findElement(connectionSumLocator).getAttribute("placeholder");
     }
 
-    //<label for="connection-sum">Руб.</label>
     public String getTextConnectionSumLabel() {
         return paySection.findElement(connectionSumLabelLocator).getText();
     }
 
-    //<input class="email" id="connection-email" type="text" placeholder="E-mail для отправки чека">
     public String getPlaceholderConnectionEmail() {
         return paySection.findElement(connectionEmailPlaceholderLocator).getAttribute("placeholder");
     }
 
-
-    // домашний интернет,
-    //By HomeInternetLocator = By.xpath("//p[text()='Домашний интернет']");
+    @Step("Выбрать в Accordion Домашний интернет")
     public void selectListPayItemHomeInternet() {
         WebElement listPaySelectElement = wait.until(
                 ExpectedConditions.presenceOfElementLocated(listPaySelectLocator)
@@ -183,25 +161,19 @@ public class PayPage {
         listPaySelectElement.findElement(homeInternetLocator).click();
     }
 
-    //<input class="phone" id="internet-phone" type="text" placeholder="Номер абонента" required="" maxlength="13" autocomplete="off">
-    //By internetPhoneLocator = By.id("internet-phone");
     public String getPlaceholderInternetPhone() {
         return paySection.findElement(internetPhoneLocator).getAttribute("placeholder");
     }
 
-    //<input class="total_rub" id="internet-sum" type="text" placeholder="Сумма" required="">
-    //By internetSumLocator = By.id("internet-sum");
     public String getPlaceholderInternetSum() {
         return paySection.findElement(internetSumLocator).getAttribute("placeholder");
     }
 
-    //<input class="email" id="internet-email" type="text" placeholder="E-mail для отправки чека">
-    //By internetEmailPlaceholderLocator = By.id("internet-email");
     public String getPlaceholderInternetEmail() {
         return paySection.findElement(internetEmailPlaceholderLocator).getAttribute("placeholder");
     }
 
-    // рассрочка,
+    @Step("Выбрать в Accordion Рассрочку")
     public void selectListPayItemInstallmentPlan() {
         WebElement listPaySelectElement = wait.until(
                 ExpectedConditions.presenceOfElementLocated(listPaySelectLocator)
@@ -209,23 +181,19 @@ public class PayPage {
         listPaySelectElement.findElement(installmentPlanLocator).click();
     }
 
-    //<input class="score" id="score-instalment" type="text" placeholder="Номер счета на 44" data-mask="account-num-instalment" required="">
     public String getPlaceholderInstalmentScore() {
         return paySection.findElement(instalmentScoreLocator).getAttribute("placeholder");
     }
 
-    //<input class="total_rub" id="instalment-sum" type="text" placeholder="Сумма" required="">
     public String getPlaceholderInstalmentSum() {
         return paySection.findElement(instalmentSumLocator).getAttribute("placeholder");
     }
 
-    //<input class="email" id="instalment-email" type="text" placeholder="E-mail для отправки чека">
     public String getPlaceholderInstalmentEmail() {
         return paySection.findElement(instalmentEmailPlaceholderLocator).getAttribute("placeholder");
     }
 
-
-    // задолженность
+    @Step("Выбрать в Accordion Задолженность")
     public void selectListPayItemArrears() {
         WebElement listPaySelectElement = wait.until(
                 ExpectedConditions.presenceOfElementLocated(listPaySelectLocator)
@@ -233,17 +201,14 @@ public class PayPage {
         listPaySelectElement.findElement(arrearsLocator).click();
     }
 
-    //<input class="score" id="score-arrears" type="text" placeholder="Номер счета на 2073" data-mask="account-num-arrears" required="">
     public String getPlaceholderArrearsScore() {
         return paySection.findElement(arrearsScoreLocator).getAttribute("placeholder");
     }
 
-    //<input class="total_rub" id="arrears-sum" type="text" placeholder="Сумма" required="">
     public String getPlaceholderArrearsSum() {
         return paySection.findElement(arrearsSumLocator).getAttribute("placeholder");
     }
 
-    //<input class="email" id="arrears-email" type="text" placeholder="E-mail для отправки чека">
     public String getPlaceholderArrearsEmail() {
         return paySection.findElement(arrearsEmailPlaceholderLocator).getAttribute("placeholder");
     }
